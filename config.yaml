@@ -1,0 +1,80 @@
+project:
+  name: "GCIENM-Reproducibility"
+  output_dir: "."
+
+data:
+  csv_path: "wind_scada.csv"
+  timestamp_column: "timestamp"
+  target_column: "power"
+  feature_columns:
+    - "wind_speed"
+    - "wind_direction"
+    - "temperature"
+    - "humidity"
+    - "power"
+  interpolation_limit: 3
+  drop_remaining_nan: true
+  resample_rule: null
+
+split:
+  lookback: 48
+  horizon: 72
+  train_fraction: 0.70
+  validation_fraction: 0.15
+  test_fraction: 0.15
+  n_folds: 5
+  expanding_window: true
+  min_train_fraction: 0.50
+
+model:
+  hidden_dim: 64
+  conv_filters: 64
+  kernel_size: 3
+  dilation_rates: [1, 2, 4]
+  num_heads: 4
+  num_encoder_layers: 2
+  num_decoder_layers: 1
+  dropout: 0.10
+  attention_mode: "nonlinear"
+  use_atm: true
+  use_mvpnn: true
+  use_dilated_conv: true
+
+training:
+  batch_size: 64
+  epochs: 50
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  patience: 8
+  gradient_clip: 1.0
+  num_workers: 0
+  device: "auto"
+  seeds: [11, 23, 37, 53, 71]
+
+ide:
+  enabled: true
+  population_size: 8
+  generations: 5
+  mutation_min: 0.35
+  mutation_max: 0.90
+  initial_cr: 0.65
+  chaos_mu: 4.0
+  evaluation_epochs: 12
+  search_space:
+    hidden_dim: [32, 64, 96, 128]
+    kernel_size: [2, 3, 5, 7]
+    dilation_base: [1, 2, 3]
+    num_heads: [1, 2, 4, 8]
+    dropout: [0.0, 0.1, 0.2, 0.3]
+    learning_rate: [0.0003, 0.0005, 0.001, 0.002]
+
+sensitivity:
+  kernel_size: [2, 3, 5, 7]
+  dilation_base: [1, 2, 3, 4]
+  lookback: [24, 48, 72, 96]
+  attention_mode: ["nonlinear", "scaled_dot"]
+  ablations:
+    - "full"
+    - "no_atm"
+    - "no_mvpnn"
+    - "no_dilated_conv"

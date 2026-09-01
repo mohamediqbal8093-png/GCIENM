@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+*.pt
+*.pth
+*.ckpt
+*.log
+.venv/
+venv/
+.env
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# Local/derived experiment data
+wind_scada.csv
+repeated_results.csv
+results_*.csv
+predictions_*.csv
+history_*.csv
+aggregate_results.csv
+statistics_summary.csv
+pairwise_statistics.csv
+friedman_statistics.csv
+average_ranks.csv
+sensitivity_results.csv
+ide_best.json
+resolved_config.json
